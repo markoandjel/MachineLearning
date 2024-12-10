@@ -1,0 +1,16 @@
+Besmisleni atributi:
+stations-Verovatno nepotreban parametar
+source-Verovatno nepotreban parametar
+Month-Obrisati ovaj parametar jer je uvek 
+Season-Obrisati jer je uvek Fall
+Condition_Code-Obrisati jer je 0 ili nan
+description-obrisati nije koristan atribut
+snow-sve nule
+snowdepth-sve nulesunset
+sunset-
+sunrise-
+moonphase-
+
+Korisni atributi:
+icon-prevesti u opis vremesnkih prilika
+Precipitation-padavine
