@@ -32,7 +32,7 @@ df.info()
 
 [31m---------------------------------------------------------------------------[39m
 [31mFileNotFoundError[39m                         Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 1[39m
+[36mCell[39m[36m [39m[32mIn[3][39m[32m, line 1[39m
 [32m----> [39m[32m1[39m df = [43mpd[49m[43m.[49m[43mread_csv[49m[43m([49m[33;43m'[39;49m[33;43mupdated_pollution_dataset.csv[39;49m[33;43m'[39;49m[43m)[49m
 [32m      2[39m df.info()
 
