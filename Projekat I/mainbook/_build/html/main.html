@@ -379,11 +379,17 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Projekat I</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-parameters">Description of parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#air-quality-levels">Air Quality Levels</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outlier-removal">Outlier removal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outlier-removal-iqr">Outlier removal (IQR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrica-konfuzije">Matrica konfuzije</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-classification-model">Baseline Classification Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-random-forest">Model - Random Forest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dummy-classification-model">Dummy Classification Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">Logistic regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest-model">Random forest model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other">Other</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-random-forest">Model - Random Forest</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#nastavak">Nastavak</a></li>
@@ -600,6 +606,18 @@ dtype: bool
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Good&#39; &#39;Hazardous&#39; &#39;Moderate&#39; &#39;Poor&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">air_quality</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 <span class="n">palette_color</span> <span class="o">=</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;bright&#39;</span><span class="p">)</span> <span class="c1">#Seaborn paleta boja </span>
 <span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">air_quality</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">air_quality</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="n">palette_color</span><span class="p">,</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f%%</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -660,8 +678,154 @@ dtype: bool
 <img alt="_images/7dd0331d4cdefe489382789b8e12c077b43d4ad07263c4e97fb23361dc57595b.png" src="_images/7dd0331d4cdefe489382789b8e12c077b43d4ad07263c4e97fb23361dc57595b.png" />
 </div>
 </div>
-<section id="outlier-removal">
-<h3>Outlier removal<a class="headerlink" href="#outlier-removal" title="Link to this heading">#</a></h3>
+<section id="outlier-removal-iqr">
+<h3>Outlier removal (IQR)<a class="headerlink" href="#outlier-removal-iqr" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+      <th>Humidity</th>
+      <th>PM2.5</th>
+      <th>PM10</th>
+      <th>NO2</th>
+      <th>SO2</th>
+      <th>CO</th>
+      <th>Proximity_to_Industrial_Areas</th>
+      <th>Population_Density</th>
+      <th>Air Quality</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+      <td>5000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>30.029020</td>
+      <td>70.056120</td>
+      <td>20.142140</td>
+      <td>30.218360</td>
+      <td>26.412100</td>
+      <td>10.014820</td>
+      <td>1.500354</td>
+      <td>8.425400</td>
+      <td>497.423800</td>
+      <td>1.300000</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>6.720661</td>
+      <td>15.863577</td>
+      <td>24.554546</td>
+      <td>27.349199</td>
+      <td>8.895356</td>
+      <td>6.750303</td>
+      <td>0.546027</td>
+      <td>3.610944</td>
+      <td>152.754084</td>
+      <td>1.187553</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>13.400000</td>
+      <td>36.000000</td>
+      <td>0.000000</td>
+      <td>-0.200000</td>
+      <td>7.400000</td>
+      <td>-6.200000</td>
+      <td>0.650000</td>
+      <td>2.500000</td>
+      <td>188.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>25.100000</td>
+      <td>58.300000</td>
+      <td>4.600000</td>
+      <td>12.300000</td>
+      <td>20.100000</td>
+      <td>5.100000</td>
+      <td>1.030000</td>
+      <td>5.400000</td>
+      <td>381.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>29.000000</td>
+      <td>69.800000</td>
+      <td>12.000000</td>
+      <td>21.700000</td>
+      <td>25.300000</td>
+      <td>8.000000</td>
+      <td>1.410000</td>
+      <td>7.900000</td>
+      <td>494.000000</td>
+      <td>1.500000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>34.000000</td>
+      <td>80.300000</td>
+      <td>26.100000</td>
+      <td>38.100000</td>
+      <td>31.900000</td>
+      <td>13.725000</td>
+      <td>1.840000</td>
+      <td>11.100000</td>
+      <td>600.000000</td>
+      <td>2.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>58.600000</td>
+      <td>128.100000</td>
+      <td>295.000000</td>
+      <td>315.800000</td>
+      <td>64.900000</td>
+      <td>44.900000</td>
+      <td>3.720000</td>
+      <td>25.800000</td>
+      <td>957.000000</td>
+      <td>3.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -844,29 +1008,193 @@ memory usage: 357.3 KB
 </div></div></div>
 </div>
 </section>
+<section id="matrica-konfuzije">
+<h3>Matrica konfuzije<a class="headerlink" href="#matrica-konfuzije" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+
+<span class="k">def</span> <span class="nf">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">):</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target_test</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target_predicted</span><span class="p">))</span>
+    <span class="n">class_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">dataframe</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">class_names</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">class_names</span><span class="p">)</span>
+    <span class="n">seaborn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span><span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">cbar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Confusion Matrix&quot;</span><span class="p">),</span><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True class&quot;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Predicted class&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
-<section id="baseline-classification-model">
-<h2>Baseline Classification Model<a class="headerlink" href="#baseline-classification-model" title="Link to this heading">#</a></h2>
+</section>
+<section id="dummy-classification-model">
+<h2>Dummy Classification Model<a class="headerlink" href="#dummy-classification-model" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.dummy</span> <span class="kn">import</span> <span class="n">DummyClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span>
-<span class="n">features_train</span><span class="p">,</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_train</span><span class="p">,</span><span class="n">target_test</span><span class="o">=</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+<span class="n">features_train</span><span class="p">,</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_train</span><span class="p">,</span><span class="n">target_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">)</span> <span class="c1">#train_size 0.25</span>
 <span class="n">dummy</span><span class="o">=</span><span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;stratified&#39;</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">target_predicted</span><span class="o">=</span><span class="n">dummy</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span><span class="n">target_train</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
-<span class="c1">#dummy.predict(features_test)</span>
-<span class="n">dummy</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R^2 score&quot;</span><span class="p">,</span><span class="n">dummy</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_test</span><span class="p">))</span>
+<span class="n">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3942307692307692
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>R^2 score 0.3942307692307692
+</pre></div>
+</div>
+<img alt="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" src="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" />
+</div>
+</div>
+</section>
+<section id="logistic-regression">
+<h2>Logistic regression<a class="headerlink" href="#logistic-regression" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="n">features_train</span><span class="p">,</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_train</span><span class="p">,</span><span class="n">target_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">)</span> 
+
+<span class="c1"># Fit logistic regression (multi-class)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">target_train</span><span class="p">)</span>
+
+<span class="c1"># Predictions</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
+
+<span class="c1"># Evaluation</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+<span class="n">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
+
+        Good       0.99      1.00      0.99       495
+   Hazardous       0.82      0.41      0.55        22
+    Moderate       0.93      0.97      0.95       348
+        Poor       0.87      0.86      0.86       175
+
+    accuracy                           0.95      1040
+   macro avg       0.90      0.81      0.84      1040
+weighted avg       0.95      0.95      0.95      1040
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\marko\anaconda3\envs\ml\Lib\site-packages\sklearn\linear_model\_logistic.py:465: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+</pre></div>
+</div>
+<img alt="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" src="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" />
+</div>
+</div>
+<p>Your data is dominated by Good and Moderate classes (especially Good).
+A DummyClassifier with strategy ‘most_frequent’ (which always predicts the most common class) will already get quite high accuracy — because the dataset is imbalanced.</p>
+<p>If logistic regression doesn’t actually learn meaningful feature relationships (e.g., due to:</p>
+<ul class="simple">
+<li><p>unscaled data,</p></li>
+<li><p>insufficient training data,</p></li>
+<li><p>features not predictive,</p></li>
+</ul>
+<p>it can end up behaving like a dummy model — predicting mostly the majority class.</p>
+</section>
+<section id="random-forest-model">
+<h2>Random forest model<a class="headerlink" href="#random-forest-model" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span>
+<span class="n">features_train</span><span class="p">,</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_train</span><span class="p">,</span><span class="n">target_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span>
+    <span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>              <span class="c1"># number of trees</span>
+    <span class="n">class_weight</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span>       <span class="c1"># handle imbalance</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">target_train</span><span class="p">)</span>
+<span class="n">target_predicted</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Random Forest performance:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span> <span class="n">target_predicted</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+<span class="n">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">)</span>
+
+<span class="n">feat_importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">features_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">feat_importance</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;barh&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Feature importance from Random Forest&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Random Forest performance:
+              precision    recall  f1-score   support
+
+        Good       1.00      1.00      1.00       495
+   Hazardous       0.92      0.50      0.65        22
+    Moderate       0.96      0.98      0.97       348
+        Poor       0.90      0.92      0.91       175
+
+    accuracy                           0.97      1040
+   macro avg       0.94      0.85      0.88      1040
+weighted avg       0.97      0.97      0.97      1040
+</pre></div>
+</div>
+<img alt="_images/f10b1724b9e9e64eacd1cff46b7ca230815b675d980fbeaf0d997685e11097a5.png" src="_images/f10b1724b9e9e64eacd1cff46b7ca230815b675d980fbeaf0d997685e11097a5.png" />
+<img alt="_images/25c9947fa1542592f71e324993b7e0ded2399652f5699dbb54b447a2ce7033ac.png" src="_images/25c9947fa1542592f71e324993b7e0ded2399652f5699dbb54b447a2ce7033ac.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Temperature&#39;, &#39;Humidity&#39;, &#39;PM2.5&#39;, &#39;PM10&#39;, &#39;NO2&#39;, &#39;SO2&#39;, &#39;CO&#39;,
+       &#39;Proximity_to_Industrial_Areas&#39;, &#39;Population_Density&#39;],
+      dtype=&#39;object&#39;)
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">plot_tree</span>
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span>
+          <span class="n">feature_names</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+          <span class="n">class_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">,</span>
+          <span class="n">max_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+          <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+          <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+          <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Simplified Decision Tree&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a30e983fac794034b1fde6bbca218a34f4e84eebde8d1a2ba012e0cdbfa5df2e.png" src="_images/a30e983fac794034b1fde6bbca218a34f4e84eebde8d1a2ba012e0cdbfa5df2e.png" />
+</div>
+</div>
+</section>
+<section id="other">
+<h2>Other<a class="headerlink" href="#other" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
@@ -900,22 +1228,6 @@ memory usage: 357.3 KB
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
-
-<span class="k">def</span> <span class="nf">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">):</span>
-    <span class="n">matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target_test</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target_predicted</span><span class="p">))</span>
-    <span class="n">class_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
-    <span class="n">dataframe</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">class_names</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">class_names</span><span class="p">)</span>
-    <span class="n">seaborn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span><span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">cbar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Confusion Matrix&quot;</span><span class="p">),</span><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True class&quot;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Predicted class&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="n">randomForest</span><span class="o">=</span><span class="n">RandomForestClassifier</span><span class="p">()</span>
 <span class="n">t</span><span class="o">=</span> <span class="n">randomForest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span><span class="n">target_train</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
@@ -926,7 +1238,7 @@ memory usage: 357.3 KB
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fc99bfb1bc4fad17ee2492d7fd318514889859315d082347854fabb5063286a9.png" src="_images/fc99bfb1bc4fad17ee2492d7fd318514889859315d082347854fabb5063286a9.png" />
+<img alt="_images/d84db013eedc17fc4572db3055bcbe13ca1c16415f6f515a1a43e264eb31cd4f.png" src="_images/d84db013eedc17fc4572db3055bcbe13ca1c16415f6f515a1a43e264eb31cd4f.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1257
 </pre></div>
 </div>
@@ -953,19 +1265,18 @@ memory usage: 357.3 KB
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.96875    0.96634615 0.96634615 0.96394231 0.95192308 0.97596154
- 0.97355769 0.98317308 0.96144578 0.96385542]
-0.9675301204819278
-[0.96875    0.97596154 0.95432692 0.96153846 0.96634615 0.97596154
- 0.97115385 0.96153846 0.97349398 0.9686747 ]
-0.9677745597775719
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.97115385 0.96394231 0.96875    0.95913462 0.94951923 0.97836538
+ 0.97836538 0.98076923 0.96144578 0.96144578]
+0.9672891566265062
+[0.96153846 0.97355769 0.95432692 0.95673077 0.96634615 0.97836538
+ 0.97596154 0.95913462 0.97108434 0.96144578]
+0.9658491658943467
 </pre></div>
 </div>
 </div>
 </div>
-</section>
 <section id="model-random-forest">
-<h2>Model - Random Forest<a class="headerlink" href="#model-random-forest" title="Link to this heading">#</a></h2>
+<h3>Model - Random Forest<a class="headerlink" href="#model-random-forest" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -1001,7 +1312,7 @@ memory usage: 357.3 KB
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;n_estimators&#39;: 400, &#39;min_samples_split&#39;: np.int64(10), &#39;min_samples_leaf&#39;: np.int64(4), &#39;max_features&#39;: &#39;log2&#39;, &#39;criterion&#39;: &#39;gini&#39;}
-0.964825970548862
+0.9654283801874162
 </pre></div>
 </div>
 </div>
@@ -1014,6 +1325,7 @@ memory usage: 357.3 KB
 </div>
 </div>
 </div>
+</section>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="nastavak">
@@ -1136,11 +1448,17 @@ memory usage: 357.3 KB
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Projekat I</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-parameters">Description of parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#air-quality-levels">Air Quality Levels</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outlier-removal">Outlier removal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outlier-removal-iqr">Outlier removal (IQR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrica-konfuzije">Matrica konfuzije</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-classification-model">Baseline Classification Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-random-forest">Model - Random Forest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dummy-classification-model">Dummy Classification Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">Logistic regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest-model">Random forest model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other">Other</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-random-forest">Model - Random Forest</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#nastavak">Nastavak</a></li>
