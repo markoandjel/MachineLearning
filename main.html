@@ -181,6 +181,7 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Projekat I</a></li>
 
+
 </ul>
 
     </div>
@@ -377,12 +378,15 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Projekat I</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-parameters">Description of parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#air-quality-levels">Air Quality Levels</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opis-karakteristika">Opis karakteristika</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kvalitet-vazduha">Kvalitet vazduha</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outlier-removal-iqr">Outlier removal (IQR)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrica-konfuzije">Matrica konfuzije</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#klasifikacija-bez-transformacije-dataseta">Klasifikacija bez transformacije dataseta</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dummy-classification-model">Dummy Classification Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">Logistic regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest-model">Random forest model</a></li>
@@ -473,32 +477,76 @@ dtype: bool
 </div>
 </div>
 <p>Dataset nema duplikata ni nedostajućih vrednosti</p>
-<section id="description-of-parameters">
-<h2>Description of parameters<a class="headerlink" href="#description-of-parameters" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Temperature (°C): Average temperature of the region.</p></li>
-<li><p>Humidity (%): Relative humidity recorded in the region.</p></li>
-<li><p>PM2.5 Concentration (µg/m³): Fine particulate matter levels.</p></li>
-<li><p>PM10 Concentration (µg/m³): Coarse particulate matter levels.</p></li>
-<li><p>NO2 Concentration (ppb): Nitrogen dioxide levels.</p></li>
-<li><p>SO2 Concentration (ppb): Sulfur dioxide levels.</p></li>
-<li><p>CO Concentration (ppm): Carbon monoxide levels.</p></li>
-<li><p>Proximity to Industrial Areas (km): Distance to the nearest industrial zone.</p></li>
-<li><p>Population Density (people/km²): Number of people per square kilometer in the region</p></li>
-</ul>
+<section id="opis-karakteristika">
+<h2>Opis karakteristika<a class="headerlink" href="#opis-karakteristika" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Karakteristika</p></th>
+<th class="head"><p>Opis</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Temparatura (°C)</p></td>
+<td><p>Prosečna temperatura vazduha</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vlažnost (%)</p></td>
+<td><p>Relativna vlažnost vazduha</p></td>
+</tr>
+<tr class="row-even"><td><p>PM2.5 (µg/m³)</p></td>
+<td><p>Nivo prisutnosti sitnih čestica</p></td>
+</tr>
+<tr class="row-odd"><td><p>PM10 (µg/m³)</p></td>
+<td><p>Nivo prisutnosti krupnih čestica</p></td>
+</tr>
+<tr class="row-even"><td><p>NO2  (ppb)</p></td>
+<td><p>Koncentracija azot-dioksida</p></td>
+</tr>
+<tr class="row-odd"><td><p>S02 (ppb)</p></td>
+<td><p>Koncentracija sumpor-dioksida</p></td>
+</tr>
+<tr class="row-even"><td><p>CO (ppb)</p></td>
+<td><p>Koncentracija ugljen-monoksida</p></td>
+</tr>
+<tr class="row-odd"><td><p>Blizina_industrije   (km)</p></td>
+<td><p>Daljina do najbliže industrijske zone</p></td>
+</tr>
+<tr class="row-even"><td><p>Gustina_populacije (people/km²)</p></td>
+<td><p>Broj ljudi po kvadratnom kilometru</p></td>
+</tr>
+<tr class="row-odd"><td><p>Kvalitet_vazduha</p></td>
+<td><p>Stepen zagađenosti vazduha</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
-<section id="air-quality-levels">
-<h2>Air Quality Levels<a class="headerlink" href="#air-quality-levels" title="Link to this heading">#</a></h2>
+<section id="kvalitet-vazduha">
+<h2>Kvalitet vazduha<a class="headerlink" href="#kvalitet-vazduha" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Good: Clean air with low pollution levels.</p></li>
-<li><p>Moderate: Acceptable air quality but with some pollutants present.</p></li>
-<li><p>Poor: Noticeable pollution that may cause health issues for sensitive groups.</p></li>
-<li><p>Hazardous: Highly polluted air posing serious health risks to the population.</p></li>
+<li><p>Dobar: Čist vazduh sa niskim nivoima zagađenja</p></li>
+<li><p>Umeren: Prihvatljiv kvalitet vazduha, ali su prisutni neki zagađivači</p></li>
+<li><p>Loš: Uočljivo zagađenje koje može izazvati zdravstvene probleme kod osetljivih grupa</p></li>
+<li><p>Opasan: Veoma zagađen vazduh koji predstavlja ozbiljan zdravstveni rizik za populaciju</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;Temperature&#39;</span><span class="p">:</span><span class="s1">&#39;Temperatura&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Humidity&#39;</span><span class="p">:</span><span class="s1">&#39;Vlažnost&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Air Quality&#39;</span><span class="p">:</span> <span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Proximity_to_Industrial_Areas&#39;</span><span class="p">:</span> <span class="s1">&#39;Blizina_Industrije&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Population_Density&#39;</span><span class="p">:</span><span class="s1">&#39;Gustina_Populacije&#39;</span>
+<span class="p">})</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span>
+    <span class="s1">&#39;Good&#39;</span><span class="p">:</span> <span class="s1">&#39;Dobar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Moderate&#39;</span><span class="p">:</span> <span class="s1">&#39;Umeren&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Poor&#39;</span><span class="p">:</span> <span class="s1">&#39;Loš&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Hazardous&#39;</span><span class="p">:</span> <span class="s1">&#39;Opasan&#39;</span>
+<span class="p">})</span>
+
+<span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span> 
+    <span class="n">encoder</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">])</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -522,16 +570,16 @@ dtype: bool
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Temperature</th>
-      <th>Humidity</th>
+      <th>Temperatura</th>
+      <th>Vlažnost</th>
       <th>PM2.5</th>
       <th>PM10</th>
       <th>NO2</th>
       <th>SO2</th>
       <th>CO</th>
-      <th>Proximity_to_Industrial_Areas</th>
-      <th>Population_Density</th>
-      <th>Air Quality</th>
+      <th>Blizina_Industrije</th>
+      <th>Gustina_Populacije</th>
+      <th>Kvalitet_Vazduha</th>
     </tr>
   </thead>
   <tbody>
@@ -546,7 +594,7 @@ dtype: bool
       <td>1.72</td>
       <td>6.3</td>
       <td>319</td>
-      <td>2</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>1</th>
@@ -559,7 +607,7 @@ dtype: bool
       <td>1.64</td>
       <td>6.0</td>
       <td>611</td>
-      <td>2</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>2</th>
@@ -572,7 +620,7 @@ dtype: bool
       <td>1.63</td>
       <td>5.2</td>
       <td>619</td>
-      <td>2</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>3</th>
@@ -611,23 +659,23 @@ dtype: bool
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Good&#39; &#39;Hazardous&#39; &#39;Moderate&#39; &#39;Poor&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Dobar&#39; &#39;Loš&#39; &#39;Opasan&#39; &#39;Umeren&#39;]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">air_quality</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-<span class="n">palette_color</span> <span class="o">=</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;bright&#39;</span><span class="p">)</span> <span class="c1">#Seaborn paleta boja </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">air_quality</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">palette_color</span> <span class="o">=</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;bright&#39;</span><span class="p">)</span> 
 <span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">air_quality</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">air_quality</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="n">palette_color</span><span class="p">,</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f%%</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Air Quality&quot;</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Kvalitet vazduha&quot;</span><span class="p">)</span> 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1ccd21fa2b1f8c285160ce2c21cf8d354d676da45d0fa5b50a9f96c4e4eaf664.png" src="_images/1ccd21fa2b1f8c285160ce2c21cf8d354d676da45d0fa5b50a9f96c4e4eaf664.png" />
+<img alt="_images/77d7f201217937923282b94d25e844a68b1cddf12c887b7388ee38d5e473b6bb.png" src="_images/77d7f201217937923282b94d25e844a68b1cddf12c887b7388ee38d5e473b6bb.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -641,41 +689,84 @@ dtype: bool
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/ed61927e6ea123de8b3940460dd6b76604f7468ff9b58192f913a06ad33e312e.png" src="_images/ed61927e6ea123de8b3940460dd6b76604f7468ff9b58192f913a06ad33e312e.png" />
+<img alt="_images/de74497356883e84f1fa1617c79b62a8c0f6137d7e70a4d92996eb63be91c61e.png" src="_images/de74497356883e84f1fa1617c79b62a8c0f6137d7e70a4d92996eb63be91c61e.png" />
 </div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Karakteristika</p></th>
+<th class="head"><p>Opis</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Temparatura (°C)</p></td>
+<td><p>Prosečna temperatura vazduha</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vlažnost (%)</p></td>
+<td><p>Relativna vlažnost vazduha</p></td>
+</tr>
+<tr class="row-even"><td><p>Vlažnost (%)</p></td>
+<td><p>Nivo prisutnosti sitnih čestica</p></td>
+</tr>
+<tr class="row-odd"><td><p>PM10 (µg/m³)</p></td>
+<td><p>Nivo prisutnosti krupnih čestica</p></td>
+</tr>
+<tr class="row-even"><td><p>NO2  (ppb)</p></td>
+<td><p>Koncentracija azot-dioksida</p></td>
+</tr>
+<tr class="row-odd"><td><p>S02 (ppb)</p></td>
+<td><p>Koncentracija sumpor-dioksida</p></td>
+</tr>
+<tr class="row-even"><td><p>CO (ppb)</p></td>
+<td><p>Koncentracija ugljen-monoksida</p></td>
+</tr>
+<tr class="row-odd"><td><p>Blizina_industrije   (km)</p></td>
+<td><p>Daljina do najbliže industrijske zone</p></td>
+</tr>
+<tr class="row-even"><td><p>Gustina_populacije (people/km²)</p></td>
+<td><p>Broj ljudi po kvadratnom kilometru</p></td>
+</tr>
+<tr class="row-odd"><td><p>Kvalitet_vazduha</p></td>
+<td><p>Stepen zagađenosti vazduha</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_simpl</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_simpl</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">)</span>
+<span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Temperatura&#39;</span><span class="p">:</span><span class="s1">&#39;Temparatura (°C)&#39;</span><span class="p">,</span><span class="s1">&#39;Vlažnost&#39;</span><span class="p">:</span><span class="s1">&#39;Vlažnost (%)&#39;</span><span class="p">,</span><span class="s1">&#39;Vlažnost&#39;</span><span class="p">:</span><span class="s1">&#39;Vlažnost (%)&#39;</span><span class="p">,</span><span class="s1">&#39;PM2.5&#39;</span><span class="p">:</span><span class="s1">&#39;PM2.5 (µg/m³)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PM10&#39;</span><span class="p">:</span><span class="s1">&#39;PM10 (µg/m³)&#39;</span><span class="p">,</span><span class="s1">&#39;NO2&#39;</span><span class="p">:</span><span class="s1">&#39;NO2 (ppb)&#39;</span><span class="p">,</span> <span class="s1">&#39;SO2&#39;</span><span class="p">:</span><span class="s1">&#39;SO2 (ppb)&#39;</span><span class="p">,</span><span class="s1">&#39;CO&#39;</span><span class="p">:</span><span class="s1">&#39;CO (ppb)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Blizina_Industrije&#39;</span><span class="p">:</span><span class="s1">&#39;Blizina_industrije (km)&#39;</span><span class="p">,</span><span class="s1">&#39;Gustina_Populacije&#39;</span><span class="p">:</span><span class="s1">&#39;Gustina_populacije (people/km²)&#39;</span><span class="p">,}</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span><span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_simpl</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_simpl</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="mi">2</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span><span class="mi">2</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;mean:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;median:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;prosek:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;medijana:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9c51e17ab651cc29a59be97fcf3d94dc6359366db84d11acd9ae691d1d182a83.png" src="_images/9c51e17ab651cc29a59be97fcf3d94dc6359366db84d11acd9ae691d1d182a83.png" />
+<img alt="_images/ffc1afecd4d888e7a91ffac65c44f0109eb070140a1eec5d7d27de7ffb0741ba.png" src="_images/ffc1afecd4d888e7a91ffac65c44f0109eb070140a1eec5d7d27de7ffb0741ba.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
-  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-  <span class="n">seaborn</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span><span class="n">hue</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]),</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">seaborn</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span><span class="n">hue</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]),</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
   <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
-  <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7dd0331d4cdefe489382789b8e12c077b43d4ad07263c4e97fb23361dc57595b.png" src="_images/7dd0331d4cdefe489382789b8e12c077b43d4ad07263c4e97fb23361dc57595b.png" />
+<img alt="_images/439d3a0e1fadeebbe3f8fe1f43e4bfacf06e0891eb724241cacdce29f92f92e7.png" src="_images/439d3a0e1fadeebbe3f8fe1f43e4bfacf06e0891eb724241cacdce29f92f92e7.png" />
 </div>
 </div>
 <section id="outlier-removal-iqr">
@@ -705,16 +796,16 @@ dtype: bool
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Temperature</th>
-      <th>Humidity</th>
+      <th>Temperatura</th>
+      <th>Vlažnost</th>
       <th>PM2.5</th>
       <th>PM10</th>
       <th>NO2</th>
       <th>SO2</th>
       <th>CO</th>
-      <th>Proximity_to_Industrial_Areas</th>
-      <th>Population_Density</th>
-      <th>Air Quality</th>
+      <th>Blizina_Industrije</th>
+      <th>Gustina_Populacije</th>
+      <th>Kvalitet_Vazduha</th>
     </tr>
   </thead>
   <tbody>
@@ -755,7 +846,7 @@ dtype: bool
       <td>0.546027</td>
       <td>3.610944</td>
       <td>152.754084</td>
-      <td>1.187553</td>
+      <td>1.268985</td>
     </tr>
     <tr>
       <th>min</th>
@@ -794,7 +885,7 @@ dtype: bool
       <td>1.410000</td>
       <td>7.900000</td>
       <td>494.000000</td>
-      <td>1.500000</td>
+      <td>1.000000</td>
     </tr>
     <tr>
       <th>75%</th>
@@ -807,7 +898,7 @@ dtype: bool
       <td>1.840000</td>
       <td>11.100000</td>
       <td>600.000000</td>
-      <td>2.000000</td>
+      <td>3.000000</td>
     </tr>
     <tr>
       <th>max</th>
@@ -835,28 +926,6 @@ dtype: bool
     <span class="n">low_lim</span><span class="o">=</span><span class="n">Q1</span><span class="o">-</span><span class="n">IQR</span><span class="o">*</span><span class="mf">1.5</span>
     <span class="n">up_lim</span><span class="o">=</span><span class="n">Q3</span><span class="o">+</span><span class="n">IQR</span><span class="o">*</span><span class="mf">1.5</span>
     <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">low_lim</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">up_lim</span><span class="p">)]</span>
-<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-Index: 4158 entries, 0 to 4998
-Data columns (total 10 columns):
- #   Column                         Non-Null Count  Dtype  
----  ------                         --------------  -----  
- 0   Temperature                    4158 non-null   float64
- 1   Humidity                       4158 non-null   float64
- 2   PM2.5                          4158 non-null   float64
- 3   PM10                           4158 non-null   float64
- 4   NO2                            4158 non-null   float64
- 5   SO2                            4158 non-null   float64
- 6   CO                             4158 non-null   float64
- 7   Proximity_to_Industrial_Areas  4158 non-null   float64
- 8   Population_Density             4158 non-null   int64  
- 9   Air Quality                    4158 non-null   int64  
-dtypes: float64(8), int64(2)
-memory usage: 357.3 KB
 </pre></div>
 </div>
 </div>
@@ -886,16 +955,16 @@ memory usage: 357.3 KB
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Temperature</th>
-      <th>Humidity</th>
+      <th>Temperatura</th>
+      <th>Vlažnost</th>
       <th>PM2.5</th>
       <th>PM10</th>
       <th>NO2</th>
       <th>SO2</th>
       <th>CO</th>
-      <th>Proximity_to_Industrial_Areas</th>
-      <th>Population_Density</th>
-      <th>Air Quality</th>
+      <th>Blizina_Industrije</th>
+      <th>Gustina_Populacije</th>
+      <th>Kvalitet_Vazduha</th>
     </tr>
   </thead>
   <tbody>
@@ -923,7 +992,7 @@ memory usage: 357.3 KB
       <td>1.358680</td>
       <td>9.002646</td>
       <td>469.990620</td>
-      <td>1.194565</td>
+      <td>1.213324</td>
     </tr>
     <tr>
       <th>std</th>
@@ -936,7 +1005,7 @@ memory usage: 357.3 KB
       <td>0.423952</td>
       <td>3.419490</td>
       <td>139.874008</td>
-      <td>1.202555</td>
+      <td>1.337437</td>
     </tr>
     <tr>
       <th>min</th>
@@ -975,7 +1044,7 @@ memory usage: 357.3 KB
       <td>1.235000</td>
       <td>10.100000</td>
       <td>470.000000</td>
-      <td>2.000000</td>
+      <td>1.000000</td>
     </tr>
     <tr>
       <th>75%</th>
@@ -988,7 +1057,7 @@ memory usage: 357.3 KB
       <td>1.650000</td>
       <td>11.300000</td>
       <td>573.000000</td>
-      <td>2.000000</td>
+      <td>3.000000</td>
     </tr>
     <tr>
       <th>max</th>
@@ -1022,33 +1091,192 @@ memory usage: 357.3 KB
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Confusion Matrix&quot;</span><span class="p">),</span><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True class&quot;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Predicted class&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">createTableReport</span><span class="p">(</span><span class="n">report_dict</span><span class="p">:</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">report_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Convert the rest to DataFrame</span>
+    <span class="n">df_report</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">report_dict</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="c1"># Add accuracy as a new row (with NaNs except accuracy column)</span>
+    <span class="n">accuracy_row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;f1-score&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span> <span class="s1">&#39;support&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+
+    <span class="n">df_report</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_report</span><span class="p">,</span> <span class="n">accuracy_row</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()])</span>
+
+    <span class="n">df_report</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_report</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">)</span>
+    
+
+    
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 </section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="klasifikacija-bez-transformacije-dataseta">
+<h1>Klasifikacija bez transformacije dataseta<a class="headerlink" href="#klasifikacija-bez-transformacije-dataseta" title="Link to this heading">#</a></h1>
 <section id="dummy-classification-model">
 <h2>Dummy Classification Model<a class="headerlink" href="#dummy-classification-model" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.dummy</span> <span class="kn">import</span> <span class="n">DummyClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
 
-<span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span>
+<span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span>
 <span class="n">features_train</span><span class="p">,</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_train</span><span class="p">,</span><span class="n">target_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">)</span> <span class="c1">#train_size 0.25</span>
 <span class="n">dummy</span><span class="o">=</span><span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;stratified&#39;</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">target_predicted</span><span class="o">=</span><span class="n">dummy</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span><span class="n">target_train</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R^2 score&quot;</span><span class="p">,</span><span class="n">dummy</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_test</span><span class="p">))</span>
+
+<span class="n">report</span> <span class="o">=</span> <span class="n">createTableReport</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span> <span class="n">target_predicted</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">,</span><span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 <span class="n">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>R^2 score 0.3942307692307692
-</pre></div>
-</div>
-<img alt="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" src="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" />
+<div class="output text_html"><style type="text/css">
+#T_64021_row0_col0, #T_64021_row0_col1, #T_64021_row0_col2, #T_64021_row4_col3, #T_64021_row5_col3 {
+  background-color: #08306b;
+  color: #f1f1f1;
+}
+#T_64021_row0_col3 {
+  background-color: #7ab6d9;
+  color: #000000;
+}
+#T_64021_row1_col0 {
+  background-color: #89bedc;
+  color: #000000;
+}
+#T_64021_row1_col1 {
+  background-color: #9fcae1;
+  color: #000000;
+}
+#T_64021_row1_col2 {
+  background-color: #94c4df;
+  color: #000000;
+}
+#T_64021_row1_col3 {
+  background-color: #d9e8f5;
+  color: #000000;
+}
+#T_64021_row2_col0, #T_64021_row2_col1, #T_64021_row2_col2, #T_64021_row2_col3 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+#T_64021_row3_col0 {
+  background-color: #3787c0;
+  color: #f1f1f1;
+}
+#T_64021_row3_col1 {
+  background-color: #4a98c9;
+  color: #f1f1f1;
+}
+#T_64021_row3_col2 {
+  background-color: #3f8fc5;
+  color: #f1f1f1;
+}
+#T_64021_row3_col3 {
+  background-color: #b0d2e7;
+  color: #000000;
+}
+#T_64021_row4_col0 {
+  background-color: #63a8d3;
+  color: #f1f1f1;
+}
+#T_64021_row4_col1 {
+  background-color: #6dafd7;
+  color: #f1f1f1;
+}
+#T_64021_row4_col2 {
+  background-color: #68acd5;
+  color: #f1f1f1;
+}
+#T_64021_row5_col0 {
+  background-color: #1c6bb0;
+  color: #f1f1f1;
+}
+#T_64021_row5_col1 {
+  background-color: #2373b6;
+  color: #f1f1f1;
+}
+#T_64021_row5_col2 {
+  background-color: #206fb4;
+  color: #f1f1f1;
+}
+#T_64021_row6_col0, #T_64021_row6_col1, #T_64021_row6_col3 {
+  background-color: #000000;
+  color: #f1f1f1;
+}
+#T_64021_row6_col2 {
+  background-color: #1e6db2;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_64021">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_64021_level0_col0" class="col_heading level0 col0" >precision</th>
+      <th id="T_64021_level0_col1" class="col_heading level0 col1" >recall</th>
+      <th id="T_64021_level0_col2" class="col_heading level0 col2" >f1-score</th>
+      <th id="T_64021_level0_col3" class="col_heading level0 col3" >support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_64021_level0_row0" class="row_heading level0 row0" >Dobar</th>
+      <td id="T_64021_row0_col0" class="data row0 col0" >0.488636</td>
+      <td id="T_64021_row0_col1" class="data row0 col1" >0.521212</td>
+      <td id="T_64021_row0_col2" class="data row0 col2" >0.504399</td>
+      <td id="T_64021_row0_col3" class="data row0 col3" >495.000000</td>
+    </tr>
+    <tr>
+      <th id="T_64021_level0_row1" class="row_heading level0 row1" >Loš</th>
+      <td id="T_64021_row1_col0" class="data row1 col0" >0.208589</td>
+      <td id="T_64021_row1_col1" class="data row1 col1" >0.194286</td>
+      <td id="T_64021_row1_col2" class="data row1 col2" >0.201183</td>
+      <td id="T_64021_row1_col3" class="data row1 col3" >175.000000</td>
+    </tr>
+    <tr>
+      <th id="T_64021_level0_row2" class="row_heading level0 row2" >Opasan</th>
+      <td id="T_64021_row2_col0" class="data row2 col0" >0.000000</td>
+      <td id="T_64021_row2_col1" class="data row2 col1" >0.000000</td>
+      <td id="T_64021_row2_col2" class="data row2 col2" >0.000000</td>
+      <td id="T_64021_row2_col3" class="data row2 col3" >22.000000</td>
+    </tr>
+    <tr>
+      <th id="T_64021_level0_row3" class="row_heading level0 row3" >Umeren</th>
+      <td id="T_64021_row3_col0" class="data row3 col0" >0.326347</td>
+      <td id="T_64021_row3_col1" class="data row3 col1" >0.313218</td>
+      <td id="T_64021_row3_col2" class="data row3 col2" >0.319648</td>
+      <td id="T_64021_row3_col3" class="data row3 col3" >348.000000</td>
+    </tr>
+    <tr>
+      <th id="T_64021_level0_row4" class="row_heading level0 row4" >macro avg</th>
+      <td id="T_64021_row4_col0" class="data row4 col0" >0.255893</td>
+      <td id="T_64021_row4_col1" class="data row4 col1" >0.257179</td>
+      <td id="T_64021_row4_col2" class="data row4 col2" >0.256308</td>
+      <td id="T_64021_row4_col3" class="data row4 col3" >1040.000000</td>
+    </tr>
+    <tr>
+      <th id="T_64021_level0_row5" class="row_heading level0 row5" >weighted avg</th>
+      <td id="T_64021_row5_col0" class="data row5 col0" >0.376872</td>
+      <td id="T_64021_row5_col1" class="data row5 col1" >0.385577</td>
+      <td id="T_64021_row5_col2" class="data row5 col2" >0.380887</td>
+      <td id="T_64021_row5_col3" class="data row5 col3" >1040.000000</td>
+    </tr>
+    <tr>
+      <th id="T_64021_level0_row6" class="row_heading level0 row6" >accuracy</th>
+      <td id="T_64021_row6_col0" class="data row6 col0" >nan</td>
+      <td id="T_64021_row6_col1" class="data row6 col1" >nan</td>
+      <td id="T_64021_row6_col2" class="data row6 col2" >0.385577</td>
+      <td id="T_64021_row6_col3" class="data row6 col3" >nan</td>
+    </tr>
+  </tbody>
+</table>
+</div><img alt="_images/3d53ae204a7ffd78ba6d494949b6becf376d76da1fbb3b2462ce60dab9c49592.png" src="_images/3d53ae204a7ffd78ba6d494949b6becf376d76da1fbb3b2462ce60dab9c49592.png" />
 </div>
 </div>
 </section>
@@ -1062,42 +1290,165 @@ memory usage: 357.3 KB
 <span class="n">features_train</span><span class="p">,</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_train</span><span class="p">,</span><span class="n">target_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">)</span> 
 
 <span class="c1"># Fit logistic regression (multi-class)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;saga&#39;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span><span class="n">class_weight</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">target_train</span><span class="p">)</span>
 
 <span class="c1"># Predictions</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
 
 <span class="c1"># Evaluation</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+<span class="n">report</span><span class="o">=</span><span class="n">createTableReport</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">,</span><span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 <span class="n">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
-
-        Good       0.99      1.00      0.99       495
-   Hazardous       0.82      0.41      0.55        22
-    Moderate       0.93      0.97      0.95       348
-        Poor       0.87      0.86      0.86       175
-
-    accuracy                           0.95      1040
-   macro avg       0.90      0.81      0.84      1040
-weighted avg       0.95      0.95      0.95      1040
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\marko\anaconda3\envs\ml\Lib\site-packages\sklearn\linear_model\_sag.py:348: ConvergenceWarning: The max_iter was reached which means the coef_ did not converge
+  warnings.warn(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\marko\anaconda3\envs\ml\Lib\site-packages\sklearn\linear_model\_logistic.py:465: ConvergenceWarning: lbfgs failed to converge (status=1):
-STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
-
-Increase the number of iterations (max_iter) or scale the data as shown in:
-    https://scikit-learn.org/stable/modules/preprocessing.html
-Please also refer to the documentation for alternative solver options:
-    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
-  n_iter_i = _check_optimize_result(
-</pre></div>
-</div>
-<img alt="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" src="_images/fd69971ec9cc3f08611bf92067399a954ed6b271d76ca4186995ae3b86905df1.png" />
+<div class="output text_html"><style type="text/css">
+#T_c0adb_row0_col0, #T_c0adb_row0_col1, #T_c0adb_row0_col2, #T_c0adb_row4_col3, #T_c0adb_row5_col3 {
+  background-color: #08306b;
+  color: #f1f1f1;
+}
+#T_c0adb_row0_col3 {
+  background-color: #7ab6d9;
+  color: #000000;
+}
+#T_c0adb_row1_col0 {
+  background-color: #7db8da;
+  color: #000000;
+}
+#T_c0adb_row1_col1, #T_c0adb_row2_col0, #T_c0adb_row2_col2, #T_c0adb_row2_col3 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+#T_c0adb_row1_col2 {
+  background-color: #bad6eb;
+  color: #000000;
+}
+#T_c0adb_row1_col3 {
+  background-color: #d9e8f5;
+  color: #000000;
+}
+#T_c0adb_row2_col1 {
+  background-color: #84bcdb;
+  color: #000000;
+}
+#T_c0adb_row3_col0 {
+  background-color: #084b93;
+  color: #f1f1f1;
+}
+#T_c0adb_row3_col1 {
+  background-color: #6caed6;
+  color: #f1f1f1;
+}
+#T_c0adb_row3_col2 {
+  background-color: #2474b7;
+  color: #f1f1f1;
+}
+#T_c0adb_row3_col3 {
+  background-color: #b0d2e7;
+  color: #000000;
+}
+#T_c0adb_row4_col0 {
+  background-color: #4e9acb;
+  color: #f1f1f1;
+}
+#T_c0adb_row4_col1 {
+  background-color: #71b1d7;
+  color: #f1f1f1;
+}
+#T_c0adb_row4_col2 {
+  background-color: #69add5;
+  color: #f1f1f1;
+}
+#T_c0adb_row5_col0 {
+  background-color: #0c56a0;
+  color: #f1f1f1;
+}
+#T_c0adb_row5_col1 {
+  background-color: #3b8bc2;
+  color: #f1f1f1;
+}
+#T_c0adb_row5_col2 {
+  background-color: #1c6bb0;
+  color: #f1f1f1;
+}
+#T_c0adb_row6_col0, #T_c0adb_row6_col1, #T_c0adb_row6_col3 {
+  background-color: #000000;
+  color: #f1f1f1;
+}
+#T_c0adb_row6_col2 {
+  background-color: #1f6eb3;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_c0adb">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_c0adb_level0_col0" class="col_heading level0 col0" >precision</th>
+      <th id="T_c0adb_level0_col1" class="col_heading level0 col1" >recall</th>
+      <th id="T_c0adb_level0_col2" class="col_heading level0 col2" >f1-score</th>
+      <th id="T_c0adb_level0_col3" class="col_heading level0 col3" >support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_c0adb_level0_row0" class="row_heading level0 row0" >Dobar</th>
+      <td id="T_c0adb_row0_col0" class="data row0 col0" >0.955513</td>
+      <td id="T_c0adb_row0_col1" class="data row0 col1" >0.997980</td>
+      <td id="T_c0adb_row0_col2" class="data row0 col2" >0.976285</td>
+      <td id="T_c0adb_row0_col3" class="data row0 col3" >495.000000</td>
+    </tr>
+    <tr>
+      <th id="T_c0adb_level0_row1" class="row_heading level0 row1" >Loš</th>
+      <td id="T_c0adb_row1_col0" class="data row1 col0" >0.566038</td>
+      <td id="T_c0adb_row1_col1" class="data row1 col1" >0.514286</td>
+      <td id="T_c0adb_row1_col2" class="data row1 col2" >0.538922</td>
+      <td id="T_c0adb_row1_col3" class="data row1 col3" >175.000000</td>
+    </tr>
+    <tr>
+      <th id="T_c0adb_level0_row2" class="row_heading level0 row2" >Opasan</th>
+      <td id="T_c0adb_row2_col0" class="data row2 col0" >0.242424</td>
+      <td id="T_c0adb_row2_col1" class="data row2 col1" >0.727273</td>
+      <td id="T_c0adb_row2_col2" class="data row2 col2" >0.363636</td>
+      <td id="T_c0adb_row2_col3" class="data row2 col3" >22.000000</td>
+    </tr>
+    <tr>
+      <th id="T_c0adb_level0_row3" class="row_heading level0 row3" >Umeren</th>
+      <td id="T_c0adb_row3_col0" class="data row3 col0" >0.882550</td>
+      <td id="T_c0adb_row3_col1" class="data row3 col1" >0.755747</td>
+      <td id="T_c0adb_row3_col2" class="data row3 col2" >0.814241</td>
+      <td id="T_c0adb_row3_col3" class="data row3 col3" >348.000000</td>
+    </tr>
+    <tr>
+      <th id="T_c0adb_level0_row4" class="row_heading level0 row4" >macro avg</th>
+      <td id="T_c0adb_row4_col0" class="data row4 col0" >0.661631</td>
+      <td id="T_c0adb_row4_col1" class="data row4 col1" >0.748821</td>
+      <td id="T_c0adb_row4_col2" class="data row4 col2" >0.673271</td>
+      <td id="T_c0adb_row4_col3" class="data row4 col3" >1040.000000</td>
+    </tr>
+    <tr>
+      <th id="T_c0adb_level0_row5" class="row_heading level0 row5" >weighted avg</th>
+      <td id="T_c0adb_row5_col0" class="data row5 col0" >0.850477</td>
+      <td id="T_c0adb_row5_col1" class="data row5 col1" >0.829808</td>
+      <td id="T_c0adb_row5_col2" class="data row5 col2" >0.835508</td>
+      <td id="T_c0adb_row5_col3" class="data row5 col3" >1040.000000</td>
+    </tr>
+    <tr>
+      <th id="T_c0adb_level0_row6" class="row_heading level0 row6" >accuracy</th>
+      <td id="T_c0adb_row6_col0" class="data row6 col0" >nan</td>
+      <td id="T_c0adb_row6_col1" class="data row6 col1" >nan</td>
+      <td id="T_c0adb_row6_col2" class="data row6 col2" >0.829808</td>
+      <td id="T_c0adb_row6_col3" class="data row6 col3" >nan</td>
+    </tr>
+  </tbody>
+</table>
+</div><img alt="_images/3d53ae204a7ffd78ba6d494949b6becf376d76da1fbb3b2462ce60dab9c49592.png" src="_images/3d53ae204a7ffd78ba6d494949b6becf376d76da1fbb3b2462ce60dab9c49592.png" />
 </div>
 </div>
 <p>Your data is dominated by Good and Moderate classes (especially Good).
@@ -1116,7 +1467,7 @@ A DummyClassifier with strategy ‘most_frequent’ (which always predicts the m
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 
-<span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span>
+<span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span>
 <span class="n">features_train</span><span class="p">,</span><span class="n">features_test</span><span class="p">,</span><span class="n">target_train</span><span class="p">,</span><span class="n">target_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
 
 <span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span>
@@ -1127,8 +1478,8 @@ A DummyClassifier with strategy ‘most_frequent’ (which always predicts the m
 <span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">target_train</span><span class="p">)</span>
 <span class="n">target_predicted</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Random Forest performance:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span> <span class="n">target_predicted</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+<span class="n">report</span><span class="o">=</span><span class="n">createTableReport</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span> <span class="n">target_predicted</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">,</span><span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 <span class="n">createConfusionMatrix</span><span class="p">(</span><span class="n">target_test</span><span class="p">,</span><span class="n">target_predicted</span><span class="p">)</span>
 
 <span class="n">feat_importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">features_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -1139,35 +1490,148 @@ A DummyClassifier with strategy ‘most_frequent’ (which always predicts the m
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Random Forest performance:
-              precision    recall  f1-score   support
-
-        Good       1.00      1.00      1.00       495
-   Hazardous       0.92      0.50      0.65        22
-    Moderate       0.96      0.98      0.97       348
-        Poor       0.90      0.92      0.91       175
-
-    accuracy                           0.97      1040
-   macro avg       0.94      0.85      0.88      1040
-weighted avg       0.97      0.97      0.97      1040
-</pre></div>
-</div>
-<img alt="_images/f10b1724b9e9e64eacd1cff46b7ca230815b675d980fbeaf0d997685e11097a5.png" src="_images/f10b1724b9e9e64eacd1cff46b7ca230815b675d980fbeaf0d997685e11097a5.png" />
-<img alt="_images/25c9947fa1542592f71e324993b7e0ded2399652f5699dbb54b447a2ce7033ac.png" src="_images/25c9947fa1542592f71e324993b7e0ded2399652f5699dbb54b447a2ce7033ac.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Temperature&#39;, &#39;Humidity&#39;, &#39;PM2.5&#39;, &#39;PM10&#39;, &#39;NO2&#39;, &#39;SO2&#39;, &#39;CO&#39;,
-       &#39;Proximity_to_Industrial_Areas&#39;, &#39;Population_Density&#39;],
-      dtype=&#39;object&#39;)
-</pre></div>
-</div>
+<div class="output text_html"><style type="text/css">
+#T_a6da6_row0_col0 {
+  background-color: #083a7a;
+  color: #f1f1f1;
+}
+#T_a6da6_row0_col1, #T_a6da6_row0_col2, #T_a6da6_row2_col0, #T_a6da6_row4_col3, #T_a6da6_row5_col3 {
+  background-color: #08306b;
+  color: #f1f1f1;
+}
+#T_a6da6_row0_col3 {
+  background-color: #7ab6d9;
+  color: #000000;
+}
+#T_a6da6_row1_col0, #T_a6da6_row2_col1, #T_a6da6_row2_col2, #T_a6da6_row2_col3 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+#T_a6da6_row1_col1 {
+  background-color: #1561a9;
+  color: #f1f1f1;
+}
+#T_a6da6_row1_col2 {
+  background-color: #2474b7;
+  color: #f1f1f1;
+}
+#T_a6da6_row1_col3 {
+  background-color: #d9e8f5;
+  color: #000000;
+}
+#T_a6da6_row3_col0 {
+  background-color: #71b1d7;
+  color: #f1f1f1;
+}
+#T_a6da6_row3_col1 {
+  background-color: #083979;
+  color: #f1f1f1;
+}
+#T_a6da6_row3_col2 {
+  background-color: #08478d;
+  color: #f1f1f1;
+}
+#T_a6da6_row3_col3 {
+  background-color: #b0d2e7;
+  color: #000000;
+}
+#T_a6da6_row4_col0 {
+  background-color: #4695c8;
+  color: #f1f1f1;
+}
+#T_a6da6_row4_col1 {
+  background-color: #3080bd;
+  color: #f1f1f1;
+}
+#T_a6da6_row4_col2 {
+  background-color: #3888c1;
+  color: #f1f1f1;
+}
+#T_a6da6_row5_col0 {
+  background-color: #3e8ec4;
+  color: #f1f1f1;
+}
+#T_a6da6_row5_col1 {
+  background-color: #084184;
+  color: #f1f1f1;
+}
+#T_a6da6_row5_col2 {
+  background-color: #084990;
+  color: #f1f1f1;
+}
+#T_a6da6_row6_col0, #T_a6da6_row6_col1, #T_a6da6_row6_col3 {
+  background-color: #000000;
+  color: #f1f1f1;
+}
+#T_a6da6_row6_col2 {
+  background-color: #08488e;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_a6da6">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_a6da6_level0_col0" class="col_heading level0 col0" >precision</th>
+      <th id="T_a6da6_level0_col1" class="col_heading level0 col1" >recall</th>
+      <th id="T_a6da6_level0_col2" class="col_heading level0 col2" >f1-score</th>
+      <th id="T_a6da6_level0_col3" class="col_heading level0 col3" >support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_a6da6_level0_row0" class="row_heading level0 row0" >Dobar</th>
+      <td id="T_a6da6_row0_col0" class="data row0 col0" >0.995976</td>
+      <td id="T_a6da6_row0_col1" class="data row0 col1" >1.000000</td>
+      <td id="T_a6da6_row0_col2" class="data row0 col2" >0.997984</td>
+      <td id="T_a6da6_row0_col3" class="data row0 col3" >495.000000</td>
+    </tr>
+    <tr>
+      <th id="T_a6da6_level0_row1" class="row_heading level0 row1" >Loš</th>
+      <td id="T_a6da6_row1_col0" class="data row1 col0" >0.902299</td>
+      <td id="T_a6da6_row1_col1" class="data row1 col1" >0.897143</td>
+      <td id="T_a6da6_row1_col2" class="data row1 col2" >0.899713</td>
+      <td id="T_a6da6_row1_col3" class="data row1 col3" >175.000000</td>
+    </tr>
+    <tr>
+      <th id="T_a6da6_level0_row2" class="row_heading level0 row2" >Opasan</th>
+      <td id="T_a6da6_row2_col0" class="data row2 col0" >1.000000</td>
+      <td id="T_a6da6_row2_col1" class="data row2 col1" >0.454545</td>
+      <td id="T_a6da6_row2_col2" class="data row2 col2" >0.625000</td>
+      <td id="T_a6da6_row2_col3" class="data row2 col3" >22.000000</td>
+    </tr>
+    <tr>
+      <th id="T_a6da6_level0_row3" class="row_heading level0 row3" >Umeren</th>
+      <td id="T_a6da6_row3_col0" class="data row3 col0" >0.949861</td>
+      <td id="T_a6da6_row3_col1" class="data row3 col1" >0.979885</td>
+      <td id="T_a6da6_row3_col2" class="data row3 col2" >0.964639</td>
+      <td id="T_a6da6_row3_col3" class="data row3 col3" >348.000000</td>
+    </tr>
+    <tr>
+      <th id="T_a6da6_level0_row4" class="row_heading level0 row4" >macro avg</th>
+      <td id="T_a6da6_row4_col0" class="data row4 col0" >0.962034</td>
+      <td id="T_a6da6_row4_col1" class="data row4 col1" >0.832893</td>
+      <td id="T_a6da6_row4_col2" class="data row4 col2" >0.871834</td>
+      <td id="T_a6da6_row4_col3" class="data row4 col3" >1040.000000</td>
+    </tr>
+    <tr>
+      <th id="T_a6da6_level0_row5" class="row_heading level0 row5" >weighted avg</th>
+      <td id="T_a6da6_row5_col0" class="data row5 col0" >0.964867</td>
+      <td id="T_a6da6_row5_col1" class="data row5 col1" >0.964423</td>
+      <td id="T_a6da6_row5_col2" class="data row5 col2" >0.962400</td>
+      <td id="T_a6da6_row5_col3" class="data row5 col3" >1040.000000</td>
+    </tr>
+    <tr>
+      <th id="T_a6da6_level0_row6" class="row_heading level0 row6" >accuracy</th>
+      <td id="T_a6da6_row6_col0" class="data row6 col0" >nan</td>
+      <td id="T_a6da6_row6_col1" class="data row6 col1" >nan</td>
+      <td id="T_a6da6_row6_col2" class="data row6 col2" >0.964423</td>
+      <td id="T_a6da6_row6_col3" class="data row6 col3" >nan</td>
+    </tr>
+  </tbody>
+</table>
+</div><img alt="_images/b15e2b10ffd667df96fef5d965962dd8c5fd4345c3b71673aa7a2f0e377a406a.png" src="_images/b15e2b10ffd667df96fef5d965962dd8c5fd4345c3b71673aa7a2f0e377a406a.png" />
+<img alt="_images/72839e2e98ca5f9ff53c07b60ff0a917536b1351430bd39d9d5c606c81bad264.png" src="_images/72839e2e98ca5f9ff53c07b60ff0a917536b1351430bd39d9d5c606c81bad264.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1189,7 +1653,7 @@ weighted avg       0.97      0.97      0.97      1040
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a30e983fac794034b1fde6bbca218a34f4e84eebde8d1a2ba012e0cdbfa5df2e.png" src="_images/a30e983fac794034b1fde6bbca218a34f4e84eebde8d1a2ba012e0cdbfa5df2e.png" />
+<img alt="_images/af13df7e24c0fbb337fdf1d8bbc6ca589b421954825eb876c273f02ae6c32828.png" src="_images/af13df7e24c0fbb337fdf1d8bbc6ca589b421954825eb876c273f02ae6c32828.png" />
 </div>
 </div>
 </section>
@@ -1216,12 +1680,12 @@ weighted avg       0.97      0.97      0.97      1040
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.35336538 0.37019231 0.36538462 0.37019231 0.38221154 0.35576923
- 0.39423077 0.37740385 0.38313253 0.39036145]
-0.37422439759036147
-[0.34615385 0.39182692 0.35576923 0.37740385 0.37019231 0.39423077
- 0.375      0.33173077 0.3686747  0.37108434]
-0.368206672845227
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.36298077 0.36057692 0.41346154 0.36538462 0.37740385 0.4375
+ 0.36538462 0.40144231 0.37108434 0.38072289]
+0.3835941844300278
+[0.34375    0.40384615 0.35576923 0.38221154 0.36778846 0.35817308
+ 0.39423077 0.39182692 0.39277108 0.33012048]
+0.37204877201112135
 </pre></div>
 </div>
 </div>
@@ -1238,8 +1702,8 @@ weighted avg       0.97      0.97      0.97      1040
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d84db013eedc17fc4572db3055bcbe13ca1c16415f6f515a1a43e264eb31cd4f.png" src="_images/d84db013eedc17fc4572db3055bcbe13ca1c16415f6f515a1a43e264eb31cd4f.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1257
+<img alt="_images/f919f45bfbc34218bec3e5f84050fdfc7c4c2c39fec358a93f23929ea478399f.png" src="_images/f919f45bfbc34218bec3e5f84050fdfc7c4c2c39fec358a93f23929ea478399f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1261
 </pre></div>
 </div>
 </div>
@@ -1265,12 +1729,12 @@ weighted avg       0.97      0.97      0.97      1040
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.97115385 0.96394231 0.96875    0.95913462 0.94951923 0.97836538
- 0.97836538 0.98076923 0.96144578 0.96144578]
-0.9672891566265062
-[0.96153846 0.97355769 0.95432692 0.95673077 0.96634615 0.97836538
- 0.97596154 0.95913462 0.97108434 0.96144578]
-0.9658491658943467
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.96875    0.96634615 0.96634615 0.95673077 0.95192308 0.97836538
+ 0.97355769 0.97836538 0.96385542 0.95903614]
+0.9663276181649675
+[0.96634615 0.97355769 0.95432692 0.95432692 0.96394231 0.97596154
+ 0.96875    0.96153846 0.9686747  0.96385542]
+0.9651280120481927
 </pre></div>
 </div>
 </div>
@@ -1280,8 +1744,8 @@ weighted avg       0.97      0.97      0.97      1040
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">)</span>
-<span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Air Quality&#39;</span><span class="p">]</span>
+<span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">)</span>
+<span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Kvalitet_Vazduha&#39;</span><span class="p">]</span>
 <span class="n">x_train</span><span class="p">,</span><span class="n">x_test</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">y_test</span><span class="o">=</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1312,7 +1776,7 @@ weighted avg       0.97      0.97      0.97      1040
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;n_estimators&#39;: 400, &#39;min_samples_split&#39;: np.int64(10), &#39;min_samples_leaf&#39;: np.int64(4), &#39;max_features&#39;: &#39;log2&#39;, &#39;criterion&#39;: &#39;gini&#39;}
-0.9654283801874162
+0.9657304895256701
 </pre></div>
 </div>
 </div>
@@ -1342,19 +1806,19 @@ weighted avg       0.97      0.97      0.97      1040
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Temperature  Humidity     PM2.5      PM10       NO2       SO2        CO  \
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Temperatura  Vlažnost     PM2.5      PM10       NO2       SO2        CO  \
 0     0.483776  0.304749  0.091873  0.283255  0.292621  0.523810  0.540404   
 1     0.439528  0.522427  0.040636  0.194053  0.595420  0.540816  0.500000   
 2     0.286136  0.510554  0.471731  0.532081  0.432570  0.639456  0.494949   
 3     0.404130  0.040897  0.107774  0.101721  0.155216  0.391156  0.252525   
 4     0.386431  0.457784  0.121908  0.253521  0.368957  0.401361  0.181818   
 
-   Proximity_to_Industrial_Areas  Population_Density  Air Quality  
-0                       0.224852            0.194651     0.666667  
-1                       0.207101            0.628529     0.666667  
-2                       0.159763            0.640416     0.666667  
-3                       0.508876            0.539376     0.000000  
-4                       0.603550            0.170877     0.000000  
+   Blizina_Industrije  Gustina_Populacije  Kvalitet_Vazduha  
+0            0.224852            0.194651               1.0  
+1            0.207101            0.628529               1.0  
+2            0.159763            0.640416               1.0  
+3            0.508876            0.539376               0.0  
+4            0.603550            0.170877               0.0  
 </pre></div>
 </div>
 </div>
@@ -1371,19 +1835,19 @@ weighted avg       0.97      0.97      0.97      1040
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Temperature  Humidity     PM2.5      PM10       NO2       SO2        CO  \
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Temperatura  Vlažnost     PM2.5      PM10       NO2       SO2        CO  \
 0     0.208528 -0.572424 -0.684376 -0.302789 -0.747481  0.155763  0.852370   
 1    -0.057517  0.557506 -0.924151 -0.708591  0.856706  0.255309  0.663646   
 2    -0.979808  0.495873  1.093263  0.829185 -0.006050  0.832674  0.640056   
 3    -0.270354 -1.942035 -0.609963 -1.128632 -1.475431 -0.620693 -0.492284   
 4    -0.376772  0.221951 -0.543819 -0.438056 -0.343064 -0.560965 -0.822550   
 
-   Proximity_to_Industrial_Areas  Population_Density  Air Quality  
-0                      -0.790460           -1.079606     0.669851  
-1                      -0.878203            1.008238     0.669851  
-2                      -1.112184            1.065440     0.669851  
-3                       0.613427            0.579229    -0.993475  
-4                       1.081389           -1.194008    -0.993475  
+   Blizina_Industrije  Gustina_Populacije  Kvalitet_Vazduha  
+0           -0.790460           -1.079606          1.336056  
+1           -0.878203            1.008238          1.336056  
+2           -1.112184            1.065440          1.336056  
+3            0.613427            0.579229         -0.907310  
+4            1.081389           -1.194008         -0.907310  
 </pre></div>
 </div>
 </div>
@@ -1446,12 +1910,15 @@ weighted avg       0.97      0.97      0.97      1040
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Projekat I</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-parameters">Description of parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#air-quality-levels">Air Quality Levels</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opis-karakteristika">Opis karakteristika</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kvalitet-vazduha">Kvalitet vazduha</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outlier-removal-iqr">Outlier removal (IQR)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrica-konfuzije">Matrica konfuzije</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#klasifikacija-bez-transformacije-dataseta">Klasifikacija bez transformacije dataseta</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dummy-classification-model">Dummy Classification Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">Logistic regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest-model">Random forest model</a></li>
