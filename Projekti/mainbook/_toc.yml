@@ -5,3 +5,4 @@ format: jb-book
 root: intro
 chapters:
 - file: main.ipynb
+- file: main2.2.ipynb
